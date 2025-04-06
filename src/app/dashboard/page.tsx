@@ -5,8 +5,8 @@ import {
 } from "@/components/ui/sidebar"
 
 const breadcrumbItems = [
-  { label: "Dashboard", href: "/" }
-  // { label: "" }
+  { label: "Dashboard", href: "/" },
+  { label: "Analytics" }
 ]
 
 export default function Page() {

@@ -36,24 +36,37 @@ export function NavMain({
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            asChild
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-          >
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+      {items.map((item) => {
+        if (!item.items?.length) {
+        return (
+          <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton tooltip={item.title} asChild>
+            <a href={item.url}>
+            {item.icon && <item.icon />}
+            <span>{item.title}</span>
+            </a>
+          </SidebarMenuButton>
+          </SidebarMenuItem>
+        );
+        }
+
+        return (
+          <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
+          <SidebarMenuItem data-slot="collapsible" data-sidebar="menu-item" className="group/menu-item relative">
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip={item.title}>
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+                {item.items?.length > 0 && (
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
+                )}
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+        
+            {item.items?.length > 0 && (
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
+                  {item.items.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
                         <a href={subItem.url}>
@@ -64,10 +77,13 @@ export function NavMain({
                   ))}
                 </SidebarMenuSub>
               </CollapsibleContent>
-            </SidebarMenuItem>
-          </Collapsible>
-        ))}
+            )}
+          </SidebarMenuItem>
+        </Collapsible>
+        );
+      })}
       </SidebarMenu>
     </SidebarGroup>
   )
+  
 }
